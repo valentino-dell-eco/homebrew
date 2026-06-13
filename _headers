@@ -1,0 +1,7 @@
+/search/*.json
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600
+
+
+*.json
+  Cache-Control: public, max-age=3600
