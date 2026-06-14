@@ -1,4 +1,4 @@
-// convert-index.js - Versione avanzata + generazione automatica probe files (data/)
+// convert-index.js - Versione FIX + debug migliorato
 const fs = require('fs');
 const path = require('path');
 
@@ -9,7 +9,7 @@ const DATA_DIR = path.join(ROOT_DIR, 'data');
 
 console.log('🚀 Generazione indice + probe files per OBR Suite...');
 
-// Pulizia completa della cartella data/ prima di iniziare
+// Pulizia data/
 if (fs.existsSync(DATA_DIR)) {
   fs.rmSync(DATA_DIR, { recursive: true, force: true });
 }
@@ -19,7 +19,6 @@ const newIndex = { x: [], m: { s: {} } };
 let idCounter = 0;
 const sourceMap = {};
 
-// Category → cartella di destinazione in /data/
 const targetFolderMap = {
   'creature': 'bestiary',
   'monster': 'bestiary',
@@ -31,7 +30,6 @@ const targetFolderMap = {
   'subclass': 'subclass',
   'background': 'backgrounds',
   'item': 'items',
-  // aggiungi altre se necessario
 };
 
 
@@ -66,8 +64,20 @@ const categoryMap = {
   'subclassFeature': 41,
 };
 
+// Incolla qui tutto il tuo categoryMap
+const categoryMapFull = {
+  'monster': 1, 'creature': 1, 'spell': 2, 'background': 3, 'item': 4,
+  'class': 5, 'condition': 6, 'feat': 7, 'optionalfeature': 8,
+  'psionic': 9, 'race': 10, 'reward': 11, 'variantrule': 12,
+  'deity': 14, 'vehicle': 15, 'trap': 16, 'hazard': 17,
+  'cult': 19, 'boon': 20, 'disease': 21, 'table': 24,
+  'language': 43, 'action': 42, 'recipe': 48, 'deck': 52,
+  'classFeature': 30, 'subclass': 40, 'subclassFeature': 41,
+};
+Object.assign(categoryMap, categoryMapFull);
+
 function getSourceCode(name) {
-  const prefix = name.split(';')[0].trim();
+  const prefix = (name || '').split(';')[0].trim();
   let code = prefix.replace(/[^A-Z0-9]/gi, '').slice(0, 6).toUpperCase();
   if (code.length < 2) code = 'HB' + (Object.keys(sourceMap).length + 1);
   return code;
@@ -79,23 +89,29 @@ function ensureTargetDir(folder) {
   return dir;
 }
 
+function extractName(item) {
+  if (!item) return null;
+  return item.name || item.title || item.label || item.header || null;
+}
+
 function processFile(filePath, category) {
   try {
-    const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    const sourceFiles = new Map(); // sourceCode → array di items
+    const raw = fs.readFileSync(filePath, 'utf8');
+    const content = JSON.parse(raw);
+    
+    console.log(`   📄 Processando ${path.basename(filePath)}`);
 
-    const items = Array.isArray(content) ? content : [content];
+    const items = Array.isArray(content) ? content : 
+                  (content[category] || content.monster || content.spell || content.feat || 
+                   content.race || content.class || content.subclass || [content]);
+
+    let processed = 0;
 
     items.forEach(item => {
-      if (!item.name) return;
-      
-      const sourceCode = getSourceCode(item.name || item.title || '');
-      if (!sourceFiles.has(sourceCode)) sourceFiles.set(sourceCode, []);
-      sourceFiles.get(sourceCode).push(item);
-    });
+      const name = extractName(item);
+      if (!name) return;
 
-    // Crea/aggiorna i file probe per ogni source
-    sourceFiles.forEach((items, sourceCode) => {
+      const sourceCode = getSourceCode(name);
       if (!sourceMap[sourceCode]) {
         sourceMap[sourceCode] = Object.keys(sourceMap).length;
       }
@@ -106,19 +122,23 @@ function processFile(filePath, category) {
       const targetFileName = `${category}-${sourceCode}.json`;
       const targetPath = path.join(DATA_DIR, targetFolder, targetFileName);
 
-      const output = {};
-      output[category === 'creature' || category === 'monster' ? 'monster' : category] = items;
+      // Crea o aggiorna il probe file
+      let outputData = {};
+      const key = (category === 'creature' || category === 'monster') ? 'monster' : category;
+      outputData[key] = [item];   // per ora uno alla volta (può essere ottimizzato)
 
-      fs.writeFileSync(targetPath, JSON.stringify(output, null, 2));
-      console.log(`   📄 Creato probe: ${targetFolder}/${targetFileName} (${items.length} items)`);
+      fs.writeFileSync(targetPath, JSON.stringify(outputData, null, 2));
 
-      // Aggiungi all'indice principale
-      items.forEach(item => {
-        addEntry(item.name || item.title, filePath, category, sourceCode);
-      });
+      // Aggiungi all'indice
+      addEntry(name, filePath, category, sourceCode);
+      processed++;
     });
+
+    if (processed > 0) {
+      console.log(`   ✅ Trovati ${processed} item in ${path.basename(filePath)}`);
+    }
   } catch (e) {
-    console.warn(`⚠️ Errore ${filePath}: ${e.message}`);
+    console.warn(`⚠️ Errore lettura ${filePath}: ${e.message}`);
   }
 }
 
@@ -152,11 +172,10 @@ foldersToScan.forEach(folder => {
   });
 });
 
-// Finalizza indice
+// Finalizza
 newIndex.m.s = sourceMap;
 fs.writeFileSync(INDEX_PATH, JSON.stringify(newIndex, null, 2));
 
 console.log(`\n✅ COMPLETATO!`);
 console.log(`   📊 Totale voci nell'indice: ${newIndex.x.length}`);
 console.log(`   🔖 Fonti rilevate:`, Object.keys(sourceMap));
-console.log(`   📁 Cartella data/ generata con tutti i probe necessari.`);
