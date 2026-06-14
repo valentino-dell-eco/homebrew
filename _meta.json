@@ -1,0 +1,14 @@
+{
+  "name": "Koe no Umi Homebrew",
+  "author": "Valentino Dell'Eco",
+  "version": "2.0",
+  "description": "Homebrew personale per campagna Koe no Umi",
+  "url": "https://github.com/valentino-dell-eco/homebrew",
+  "license": "MIT",
+  "sources": {
+    "LLA": "LaserLlama",
+    "KOE": "Koe no Umi Campaign"
+  },
+  "compatibleWith": ["5etools"],
+  "lastUpdated": "2026-06-14"
+}
