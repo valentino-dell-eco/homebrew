@@ -1,25 +1,40 @@
-// convert-index.js - Versione avanzata per OBR Suite (stile 5etools)
+// convert-index.js - Versione avanzata + generazione automatica probe files (data/)
 const fs = require('fs');
 const path = require('path');
 
 const ROOT_DIR = __dirname;
 const SEARCH_DIR = path.join(ROOT_DIR, 'search');
 const INDEX_PATH = path.join(SEARCH_DIR, 'index.json');
+const DATA_DIR = path.join(ROOT_DIR, 'data');
 
-console.log('🚀 Generazione indice avanzato in stile 5etools...');
+console.log('🚀 Generazione indice + probe files per OBR Suite...');
 
-// Struttura finale
-const newIndex = {
-  x: [],
-  m: {
-    s: {}   // source map
-  }
-};
+// Pulizia completa della cartella data/ prima di iniziare
+if (fs.existsSync(DATA_DIR)) {
+  fs.rmSync(DATA_DIR, { recursive: true, force: true });
+}
+fs.mkdirSync(DATA_DIR, { recursive: true });
 
+const newIndex = { x: [], m: { s: {} } };
 let idCounter = 0;
 const sourceMap = {};
 
-// Category map (già aggiornato da te)
+// Category → cartella di destinazione in /data/
+const targetFolderMap = {
+  'creature': 'bestiary',
+  'monster': 'bestiary',
+  'spell': 'spells',
+  'feat': 'feats',
+  'optionalfeature': 'optionalfeatures',
+  'race': 'races',
+  'class': 'class',
+  'subclass': 'subclass',
+  'background': 'backgrounds',
+  'item': 'items',
+  // aggiungi altre se necessario
+};
+
+
 const categoryMap = {
   'monster': 1,
   'creature': 1,
@@ -58,35 +73,58 @@ function getSourceCode(name) {
   return code;
 }
 
+function ensureTargetDir(folder) {
+  const dir = path.join(DATA_DIR, folder);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  return dir;
+}
+
 function processFile(filePath, category) {
   try {
     const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    
-    let name = content.name || content.title || path.basename(filePath, '.json');
+    const sourceFiles = new Map(); // sourceCode → array di items
 
-    if (Array.isArray(content)) {
-      content.forEach(item => {
-        if (item.name) addEntry(item.name, filePath, category);
+    const items = Array.isArray(content) ? content : [content];
+
+    items.forEach(item => {
+      if (!item.name) return;
+      
+      const sourceCode = getSourceCode(item.name || item.title || '');
+      if (!sourceFiles.has(sourceCode)) sourceFiles.set(sourceCode, []);
+      sourceFiles.get(sourceCode).push(item);
+    });
+
+    // Crea/aggiorna i file probe per ogni source
+    sourceFiles.forEach((items, sourceCode) => {
+      if (!sourceMap[sourceCode]) {
+        sourceMap[sourceCode] = Object.keys(sourceMap).length;
+      }
+
+      const targetFolder = targetFolderMap[category] || category;
+      ensureTargetDir(targetFolder);
+
+      const targetFileName = `${category}-${sourceCode}.json`;
+      const targetPath = path.join(DATA_DIR, targetFolder, targetFileName);
+
+      const output = {};
+      output[category === 'creature' || category === 'monster' ? 'monster' : category] = items;
+
+      fs.writeFileSync(targetPath, JSON.stringify(output, null, 2));
+      console.log(`   📄 Creato probe: ${targetFolder}/${targetFileName} (${items.length} items)`);
+
+      // Aggiungi all'indice principale
+      items.forEach(item => {
+        addEntry(item.name || item.title, filePath, category, sourceCode);
       });
-      return;
-    }
-
-    if (name) {
-      addEntry(name, filePath, category);
-    }
+    });
   } catch (e) {
-    console.warn(`⚠️ Errore lettura ${filePath}: ${e.message}`);
+    console.warn(`⚠️ Errore ${filePath}: ${e.message}`);
   }
 }
 
-function addEntry(displayName, filePath, category) {
+function addEntry(displayName, filePath, category, sourceCode) {
   const relPath = filePath.replace(ROOT_DIR + path.sep, '').replace(/\\/g, '/');
   
-  const sourceCode = getSourceCode(displayName);
-  if (!sourceMap[sourceCode]) {
-    sourceMap[sourceCode] = Object.keys(sourceMap).length;
-  }
-
   const entry = {
     id: idCounter++,
     c: categoryMap[category] || 99,
@@ -96,41 +134,29 @@ function addEntry(displayName, filePath, category) {
     h: 1,
     n: displayName
   };
-
   newIndex.x.push(entry);
 }
 
-// Cartelle da scansionare — ESPANSE con tutte le categorie del tuo categoryMap
-const foldersToScan = [
-  'class', 'creature', 'monster', 'spell', 'background', 'item', 'items',
-  'condition', 'conditions', 'feat', 'optionalfeature', 'psionic', 'race',
-  'reward', 'rewards', 'variantrule', 'variantrules', 'deity', 'deities',
-  'vehicle', 'vehicles', 'trap', 'traps', 'hazard', 'hazards', 'cult',
-  'boon', 'disease', 'diseases', 'table', 'tables', 'language', 'languages',
-  'action', 'actions', 'recipe', 'recipes', 'deck', 'decks',
-  'classFeature', 'classFeatures', 'subclass', 'subclassFeature', 'subclassFeatures',
-  'data'   // mantiene compatibilità con struttura annidata
-];
+// ==================== SCAN ====================
+const foldersToScan = ['class', 'creature', 'monster', 'spell', 'feat', 'optionalfeature', 'race', 'subclass', 'background', 'item', 'data'];
 
 foldersToScan.forEach(folder => {
   const fullFolder = path.join(ROOT_DIR, folder);
   if (!fs.existsSync(fullFolder)) return;
 
   console.log(`📁 Scanning ${folder}...`);
-
   const files = fs.readdirSync(fullFolder).filter(f => f.endsWith('.json'));
-  
+
   files.forEach(file => {
-    const filePath = path.join(fullFolder, file);
-    processFile(filePath, folder);
+    processFile(path.join(fullFolder, file), folder);
   });
 });
 
-// Finalizza e salva
+// Finalizza indice
 newIndex.m.s = sourceMap;
-
 fs.writeFileSync(INDEX_PATH, JSON.stringify(newIndex, null, 2));
 
-console.log(`✅ Indice generato con successo!`);
-console.log(`   📊 Totale voci: ${newIndex.x.length}`);
+console.log(`\n✅ COMPLETATO!`);
+console.log(`   📊 Totale voci nell'indice: ${newIndex.x.length}`);
 console.log(`   🔖 Fonti rilevate:`, Object.keys(sourceMap));
+console.log(`   📁 Cartella data/ generata con tutti i probe necessari.`);
