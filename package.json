@@ -1,5 +1,5 @@
-{
+/*{
   "scripts": {
     "build": "node convert-index.js"
   }
-}
+}*/
