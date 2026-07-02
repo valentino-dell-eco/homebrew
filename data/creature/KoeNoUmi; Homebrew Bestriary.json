@@ -1,0 +1,454 @@
+{
+	"_meta": {
+		"sources": [
+			{
+				"json": "KoeNoUmiBestiary",
+				"abbreviation": "KNUB",
+				"full": "Koe no Umi - Homebrew Bestiary",
+				"authors": [
+					"Valentino dell'eco"
+				],
+				"convertedBy": [
+					"Claude"
+				],
+				"dateReleased": "2026-07-02",
+				"version": "1.0.0"
+			}
+		],
+		"internalCopies": [
+			"monsterFluff"
+		]
+	},
+	"monster": [
+		{
+			"name": "Opera Magna",
+			"source": "KoeNoUmiBestiary",
+			"page": 1,
+			"size": [
+				"L"
+			],
+			"type": {
+				"type": "construct"
+			},
+			"alignment": [
+				"C",
+				"E"
+			],
+			"ac": [
+				{
+					"ac": 14,
+					"condition": "Agony Form"
+				},
+				{
+					"ac": 17,
+					"condition": "Muse Form"
+				}
+			],
+			"initiative": {
+				"special": "+1 (11)"
+			},
+			"hp": {
+				"average": 152,
+				"formula": "16d10 + 64"
+			},
+			"speed": {
+				"walk": 30
+			},
+			"str": 21,
+			"dex": 8,
+			"con": 20,
+			"int": 8,
+			"wis": 12,
+			"cha": 16,
+			"save": {
+				"str": "+9",
+				"dex": "+8",
+				"con": "+9"
+			},
+			"skill": {
+				"athletics": "+9",
+				"perception": "+5"
+			},
+			"immune": [
+				"lightning",
+				"poison",
+				{
+					"immune": [
+						"bludgeoning",
+						"piercing",
+						"slashing"
+					],
+					"note": "from Nonmagical Attacks that aren't adamantine",
+					"cond": true
+				}
+			],
+			"conditionImmune": [
+				"charmed",
+				"exhaustion",
+				"frightened",
+				"paralyzed",
+				"petrified",
+				"poisoned"
+			],
+			"senses": [
+				"passive Perception 10"
+			],
+			"languages": [
+				"Common (understands but can't speak it)"
+			],
+			"cr": "7",
+			"trait": [
+				{
+					"name": "Lightning Absorption",
+					"entries": [
+						"Whenever Opera Magna takes lightning damage, it takes no damage and instead regains a number of hit points equal to the damage dealt."
+					]
+				},
+				{
+					"name": "Aversion to Fire",
+					"entries": [
+						"If Opera Magna takes fire damage, it has disadvantage on attack rolls and ability checks until the end of its next turn."
+					]
+				},
+				{
+					"name": "Immutable Form",
+					"entries": [
+						"Opera Magna is immune to any spell or effect that would alter its form."
+					]
+				},
+				{
+					"name": "Transformation into the Muse Form",
+					"entries": [
+						"Opera Magna begins combat in its Agony Form. When it starts its turn with 60 or fewer hit points, its grotesque body dramatically splits open, its chest unfurling like a macabre flower of flesh. The beautiful woman fused within is completely freed and takes control. Opera Magna permanently changes to the Muse Form (until it is destroyed). In this form, its Strength and Dexterity scores are swapped."
+					]
+				},
+				{
+					"name": "Face of the Muse",
+					"entries": [
+						"Creatures within 10 feet (30 feet in the Muse Form) that can see the bust of the beautiful woman must succeed on a {@dc 14} Wisdom saving throw at the start of their turn or become {@condition charmed} until the start of their next turn. While {@condition charmed} this way, the creature's speed is halved and it becomes obsessed with Opera Magna, using its entire turn to get as close as possible to Opera Magna, up to within 10 feet of her. Creatures {@condition charmed} by Opera Magna have disadvantage on attack rolls against her."
+					]
+				},
+				{
+					"name": "Opera's Hunger",
+					"entries": [
+						"Opera Magna can grapple up to 2 Medium or smaller creatures (in the Agony Form). In the Muse Form, this becomes up to 2 Large creatures or up to 4 Medium or smaller creatures."
+					]
+				}
+			],
+			"action": [
+				{
+					"name": "Multiattack (Agony Form only)",
+					"entries": [
+						"Opera Magna makes two attacks with Smash."
+					]
+				},
+				{
+					"name": "Smash (Agony Form only)",
+					"entries": [
+						"{@atk mw} {@hit 9} to hit, reach 10 ft., one target. {@h}19 ({@damage 3d8 + 6}) bludgeoning damage. If the target is a creature, it must succeed on a {@dc 16} Strength saving throw or be pushed 10 feet away and knocked {@condition prone}."
+					]
+				},
+				{
+					"name": "Muse's Embrace (Muse Form only)",
+					"entries": [
+						"{@atk mw} {@hit 9} to hit (using Dexterity), reach 10 ft., one target. {@h}14 ({@damage 2d8 + 5}) slashing damage. The target must succeed on a {@dc 16} Strength saving throw or be {@condition grappled} (escape {@dc 16}), up to the limit described in Opera's Hunger."
+					]
+				},
+				{
+					"name": "Ray of Destruction {@recharge 5}",
+					"entries": [
+						"Muse Form only. The beautiful woman opens her mouth wide and emits a lacerating sonic wave (an enhanced {@spell shatter} effect) in a line 10 feet wide and 60 feet long. Each creature in the line must make a {@dc 16} Dexterity saving throw, taking 34 ({@damage 3d8 + 10}) thunder damage on a failed save, or half as much damage on a successful one."
+					]
+				}
+			],
+			"legendary": [
+				{
+					"entries": [
+						"Opera Magna can take 3 legendary actions, choosing from the options below. Only one legendary action can be used at a time and only at the end of another creature's turn. Opera Magna regains all expended legendary actions at the start of its turn."
+					]
+				},
+				{
+					"name": "Grasping Attack",
+					"entries": [
+						"Opera Magna attempts to grapple one creature within its reach. The target must succeed on a {@dc 16} Strength saving throw or become {@condition grappled} (escape {@dc 16}), up to the limit described in Opera's Hunger."
+					]
+				},
+				{
+					"name": "Defensive Stance",
+					"entries": [
+						"Opera Magna releases all creatures it is grappling and assumes a defensive posture, gaining a +2 bonus to its Armor Class until the start of its next turn."
+					]
+				},
+				{
+					"name": "Recharge the Ray (Costs 2 Actions)",
+					"entries": [
+						"Opera Magna attempts to recharge its ray, increasing the recharge threshold of Ray of Destruction by 1."
+					]
+				}
+			],
+			"miscTags": [
+				"MW"
+			],
+			"conditionInflict": [
+				"charmed",
+				"grappled",
+				"prone"
+			],
+			"hasFluff": false
+		},
+		{
+			"name": "Vizir, the Boneeater",
+			"source": "KoeNoUmiBestiary",
+			"page": 1,
+			"size": [
+				"L"
+			],
+			"type": {
+				"type": "undead",
+				"tags": [
+					"minotaur"
+				]
+			},
+			"alignment": [
+				"C",
+				"E"
+			],
+			"ac": [
+				15
+			],
+			"hp": {
+				"average": 95
+			},
+			"speed": {
+				"walk": 30
+			},
+			"str": 14,
+			"dex": 12,
+			"con": 17,
+			"int": 16,
+			"wis": 18,
+			"cha": 20,
+			"save": {
+				"wis": "+7",
+				"cha": "+8"
+			},
+			"skill": {
+				"perception": "+7",
+				"deception": "+8",
+				"intimidation": "+8",
+				"religion": "+6"
+			},
+			"resist": [
+				"necrotic",
+				"radiant",
+				{
+					"resist": [
+						"bludgeoning",
+						"piercing",
+						"slashing"
+					],
+					"note": "from Nonmagical Attacks"
+				}
+			],
+			"immune": [
+				"poison"
+			],
+			"conditionImmune": [
+				"exhaustion",
+				"poisoned",
+				"charmed"
+			],
+			"senses": [
+				"Darkvision 60 ft."
+			],
+			"languages": [
+				"Common",
+				"Celestial",
+				"Infernal",
+				"Abyssal"
+			],
+			"cr": "5",
+			"trait": [
+				{
+					"name": "Blasphemous Aura",
+					"entries": [
+						"All undead allies within 10 feet of the Vizir have advantage on saving throws and attack rolls. Creatures that regain hit points while within the aura become {@condition poisoned} until the start of their next turn."
+					]
+				},
+				{
+					"name": "Divine Perception",
+					"entries": [
+						"The Vizir automatically senses the presence of any celestial, holy symbol, or sacred place within 60 feet of it, even through thin walls."
+					]
+				},
+				{
+					"name": "Charge",
+					"entries": [
+						"If the Vizir moves at least 10 feet straight toward a target and hits it with a Gore attack on the same turn, the target takes an extra 9 ({@damage 2d8}) piercing damage. If the target is a creature, it must succeed on a {@dc 14} Strength saving throw or be pushed up to 10 feet away and knocked {@condition prone}."
+					]
+				}
+			],
+			"action": [
+				{
+					"name": "Multiattack",
+					"entries": [
+						"The Vizir makes two attacks: one with Undead Star and one with Gore."
+					]
+				},
+				{
+					"name": "Undead Star",
+					"entries": [
+						"{@atk mw} {@hit 2} to hit, reach 5 ft., one target. {@h}8 ({@damage 2d6 + 2}) bludgeoning damage plus 4 ({@damage 2d4}) necrotic damage. The target must succeed on a {@dc 14} Constitution saving throw or have disadvantage on its next saving throw within 1 minute."
+					]
+				},
+				{
+					"name": "Gore",
+					"entries": [
+						"{@atk mw} {@hit 6} to hit, reach 5 ft., one target. {@h}13 ({@damage 2d8 + 4}) piercing damage."
+					]
+				}
+			],
+			"legendaryGroup": {
+				"name": "Vizir, the Boneeater",
+				"source": "KoeNoUmiBestiary"
+			},
+			"miscTags": [
+				"MW"
+			],
+			"conditionInflict": [
+				"poisoned",
+				"prone"
+			],
+			"hasFluff": true
+		},
+		{
+			"name": "Silver Grin",
+			"source": "KoeNoUmiBestiary",
+			"page": 1,
+			"size": [
+				"L"
+			],
+			"type": {
+				"type": "monstrosity"
+			},
+			"alignment": [
+				"N",
+				"E"
+			],
+			"ac": [
+				{
+					"ac": 14,
+					"from": [
+						"natural armor"
+					]
+				}
+			],
+			"hp": {
+				"average": 51,
+				"formula": "6d10 + 18"
+			},
+			"speed": {
+				"walk": 50
+			},
+			"str": 18,
+			"dex": 17,
+			"con": 16,
+			"int": 5,
+			"wis": 12,
+			"cha": 7,
+			"immune": [
+				"fire",
+				{
+					"immune": [
+						"bludgeoning",
+						"piercing",
+						"slashing"
+					],
+					"note": "from Nonmagical Attacks not made with silvered weapons"
+				}
+			],
+			"conditionImmune": [
+				"charmed",
+				"exhaustion",
+				"frightened"
+			],
+			"senses": [
+				"Darkvision 60 ft."
+			],
+			"languages": [
+				"understands Common, Elvish, and Sylvan but can't speak them"
+			],
+			"cr": "4",
+			"trait": [
+				{
+					"name": "Keen Hearing and Smell",
+					"entries": [
+						"The Silver Grin has advantage on Wisdom ({@skill Perception}) checks that rely on hearing or smell."
+					]
+				},
+				{
+					"name": "Silver Pack",
+					"entries": [
+						"The Silver Grin can spend 1 hour to corrupt up to 8 wolves it can see within 300 feet. While corrupted, those creatures follow the Silver Grin's commands and share its immunities."
+					]
+				}
+			],
+			"action": [
+				{
+					"name": "Bite",
+					"entries": [
+						"{@atk mw} {@hit 6} to hit, reach 5 ft., one target. {@h}11 ({@damage 2d6 + 4}) piercing damage, plus 14 ({@damage 4d6}) psychic damage if the target is {@condition frightened}."
+					]
+				},
+				{
+					"name": "Baleful Baying {@recharge 6}",
+					"entries": [
+						"The Silver Grin bays magically. Every enemy within 300 feet of it that can hear it must succeed on a {@dc 13} Wisdom saving throw or be {@condition frightened} until the end of the Silver Grin's next turn or until the Silver Grin is incapacitated. A {@condition frightened} target that starts its turn within 30 feet of the Silver Grin must use all its movement on that turn to get as far away from the Silver Grin as possible, must finish that movement before taking an action, and must take the most direct route available, even if it leads through hazards. A target that succeeds on the saving throw is immune to the Baleful Baying of all Silver Grins for the next 24 hours."
+					]
+				},
+				{
+					"name": "Fire Breath {@recharge 5}",
+					"entries": [
+						"The Silver Grin exhales fire in a 15-foot cone. Each creature in that area must make a {@dc 12} Dexterity saving throw, taking 21 ({@damage 6d6}) fire damage on a failed save, or half as much damage on a successful one."
+					]
+				}
+			],
+			"damageTags": [
+				"P"
+			],
+			"miscTags": [
+				"MW"
+			],
+			"conditionInflict": [
+				"frightened"
+			],
+			"hasFluff": false
+		}
+	],
+	"monsterFluff": [
+		{
+			"name": "Vizir, the Boneeater",
+			"source": "KoeNoUmiBestiary",
+			"entries": [
+				"Once a high priest of the temple of Ator, this vizier betrayed his goddess to attain immortality through dark practices. The dark arts transformed him into an undead creature, forced to serve the corruption he once fought against. He still wears the remains of his ceremonial robes, now tattered and stained with black mud, and his face is a mask of dried skin stretched over a skull. From his hollow eyes drips an amber, dying light."
+			]
+		}
+	],
+	"legendaryGroup": [
+		{
+			"name": "Vizir, the Boneeater",
+			"source": "KoeNoUmiBestiary",
+			"lairActions": [
+				"When fighting in its lair (a desecrated temple once dedicated to Ator), the Vizir can draw on the power of the place. On initiative count 20 (losing initiative ties), it can take one of the following lair actions:",
+				{
+					"type": "list",
+					"items": [
+						"{@b Devouring Darkness.} All nonmagical light sources within 60 feet go out. Magical light sources of 3rd level or lower are suppressed for 1 round.",
+						"{@b Blasphemous Sand.} The ground within the Vizir's Blasphemous Aura turns to quicksand. Creatures in the area must succeed on a {@dc 13} Strength saving throw at the start of their turn or be {@condition restrained}. A restrained creature can use its action to try to free itself with a {@dc 13} Strength check.",
+						"{@b The Vizir's Deception.} A distorted illusion of Ator briefly appears, unsettling the Vizir's enemies. All hostile creatures within 60 feet must succeed on a {@dc 15} saving throw or be {@condition frightened} of the Vizir for 1 minute. At the start of each of its turns, a frightened creature can repeat the saving throw. A creature that succeeds on the saving throw is immune to this effect for the next 24 hours."
+					]
+				}
+			]
+		}
+	]
+}
