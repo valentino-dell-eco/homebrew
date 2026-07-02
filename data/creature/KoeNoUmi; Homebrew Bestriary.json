@@ -186,6 +186,21 @@
 					]
 				}
 			],
+			"tokenHref": {
+				"type": "external",
+				"url": "https://homebrew-cwg.pages.dev/tokenHref/Opera Magna.png"
+			},
+			"altArt": [
+				{
+					"tokenHref": {
+						"type": "external",
+						"url": "https://homebrew-cwg.pages.dev/tokenHref/Opera Magna - Muse Form.png"
+					},
+					"name": "Muse Form",
+					"source": "KoeNoUmiBestiary",
+					"page": 1
+				}
+			],
 			"miscTags": [
 				"MW"
 			],
@@ -312,6 +327,10 @@
 				"name": "Vizir, the Boneeater",
 				"source": "KoeNoUmiBestiary"
 			},
+			"tokenHref": {
+				"type": "external",
+				"url": "https://homebrew-cwg.pages.dev/tokenHref/Vizir, the Boneeater.png"
+			},
 			"miscTags": [
 				"MW"
 			],
@@ -413,6 +432,10 @@
 					]
 				}
 			],
+			"tokenHref": {
+				"type": "external",
+				"url": "https://homebrew-cwg.pages.dev/tokenHref/Silver Grin.png"
+			},
 			"damageTags": [
 				"P"
 			],
