@@ -376,7 +376,6 @@
 			"wis": 12,
 			"cha": 7,
 			"immune": [
-				"fire",
 				{
 					"immune": [
 						"bludgeoning",
@@ -385,6 +384,10 @@
 					],
 					"note": "from Nonmagical Attacks not made with silvered weapons"
 				}
+			],
+			"resist": [
+				"fire",
+				"cold"
 			],
 			"conditionImmune": [
 				"charmed",
@@ -408,7 +411,7 @@
 				{
 					"name": "Silver Pack",
 					"entries": [
-						"The Silver Grin can spend 1 hour to corrupt up to 8 wolves it can see within 300 feet. While corrupted, those creatures follow the Silver Grin's commands and share its immunities."
+						"The Silver Grin can spend 1 hour to corrupt up to 8 wolves it can see within 300 feet. While corrupted, those creatures follow the Silver Grin's commands and share its immunities and resistances."
 					]
 				}
 			],
